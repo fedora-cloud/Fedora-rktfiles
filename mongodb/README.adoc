@@ -1,0 +1,119 @@
+= A simple MongoDB service
+
+This directory contains scripts and files which can be used to create
+a Rocket image which will provide a mongodb service.
+
+== Source Files
+
+mktree.sh::
+	A script to compose the image file tree
+manifest::
+	The rocket image description file
+
+== Requirements
+
+- actool
+- rkt
+
+== Image Structure
+
+The image tree is composed under the current working directory in a
+sub-directory named _image_.  It follows the AppContainer
+specification for the location and format of the manifest file and the
+location of the image contents.
+
+    rootfs/
+			/usr/bin/
+				mongod
+			/lib64/
+			  lib*.so
+			/data/db/
+			/dev/
+
+=== The _mongdb_ binary and shared library files
+
+The first file is the _mongod_ binary.  It is placed by convention into
+`/usr/bin`. The _mongod_ binary is dynamically linked. It requires a
+set of shared libraries to operate.
+
+You can list the dynamic
+libraries used by a binary using _ldd_.  The _mktree.sh_ script uses
+_ldd_ to find the set of shared libraries and copy them into the
+default lookup location _/lib64_.
+
+=== MongoDB configuration and data files
+
+MongoDB places its data files in _/data/db/_ if a location is not
+specified.  The _mktree.sh_ script creates that directory in the
+rootfs.
+
+The _mongod_ process attempts to read _/dev/urandom_ to get a seed for
+generating random numbers for internal use.  The _mktree.sh_ script
+creates the _/dev_ directory in the rootfs.  This will be used as a
+mount point to import the host's _/dev_ tree into the container.
+
+*TBD:* figure out how to import a single file with a bind mount
+
+The _mongodb_ process also attempts to read _/proc/cpuinfo_ to
+optimize the CPU thread usage.  The process will continue if it cannot
+read _/proc/cpuinfo_ but it will assume that it only has a single
+process thread available.
+
+*TBD:* Find out how to make the stage1 /proc available inside the
+container
+
+Currently all arguments to the _mongod_ process are passed in as
+command-line arguments from the manifest.
+
+== Building the File Tree
+
+The _mktree.sh_ script will create the model tree for the image as
+noted above.
+
+    sh mktree.sh
+
+The result is a directory named _image_ containing the image source
+files.
+
+== Building the Image
+
+The image can be created merely using _tar_ but the AppContainer
+project provides _actool_ to improve the process.  _actool_ will
+validate the manifest before composing the image _.aci_ file.
+
+    actool build image mongod-f21-amd64.aci
+
+If you are rebuilding the image add _--overwrite_ after the _build_
+argument.
+
+Not that the version in the manifest must be incremented for each
+buid.  The _rkt_ binary examines the version number in the image
+manifest, and if it finds that they are the same, it assumes that it
+can use the cached copy of the image.
+
+== Running the Image
+
+Right now this is a bit of a toy.  It runs as a single process inside
+a container attached to a user shell
+
+    sudo rkt run --volume=dev:/dev mongod-f21-amd64.aci
+
+You can observe the startup logs for the container on STDOUT and
+STDERR.  The daemon will be listening on all host interfaces on ports
+27017 (mongod) and 28017 (admin web).
+
+== Additional Work
+
+- limiting /dev/urandom
+- accessing /proc/cpuinfo
+- importing persistant storage for the DB files
+- adding SSL support
+- adding admin user initialization
+- adding virtual network interface (avoid port conflicts)
+- enable more detailed configuration
+
+== References
+
+- https://github.com/appc/spec/blob/master/SPEC.md#image-layout[AppContainer Image Layout]
+- https://github.com/appc/spec/blob/master/SPEC.md#image-manifest-schema[AppContainer manifest schema]
+- https://github.com/appc/spec#building-acis[Using _actool_]

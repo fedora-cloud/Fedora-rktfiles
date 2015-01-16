@@ -1,0 +1,55 @@
+{
+		"acKind": "ImageManifest",
+		"acVersion": "0.1.1",
+		"name": "rocket-images.cloud.lab.eng.bos.redhat.com/mongodb",
+		"labels": [
+				{
+						"name": "version",
+						"value": "0.9.8"
+				},
+				{
+						"name": "arch",
+						"value": "amd64"
+				},
+				{
+						"name": "os",
+						"value": "linux"
+				}
+		],
+		"app": {
+				"exec": [
+						"/usr/bin/mongod",
+						"--noauth",
+						"--smallfiles"
+				],
+				"user": "0",
+				"group": "0",
+				"mountPoints": [
+						{
+								"name": "dev",
+								"path": "/dev",
+								"readOnly": true
+						}
+				],
+				"ports": [
+						{
+								"name": "mongod",
+								"port": 27017,
+								"protocol": "tcp",
+								"socketActivated": false
+						},
+						{
+								"name": "webadmin",
+								"port": 28017,
+								"protocol": "tcp",
+								"socketActivated": false
+						}
+				]
+		},
+		"annotations": [
+				{
+						"name": "authors",
+						"value": "Mark Lamourine <markllama@gmail.com>"
+				}
+		]
+}
