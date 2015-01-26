@@ -96,7 +96,7 @@ can use the cached copy of the image.
 Right now this is a bit of a toy.  It runs as a single process inside
 a container attached to a user shell
 
-    sudo rkt run --volume=dev:/dev mongod-f21-amd64.aci
+    sudo rkt run -volume=dev,kind=host,source=/dev mongod-f21-amd64.aci
 
 You can observe the startup logs for the container on STDOUT and
 STDERR.  The daemon will be listening on all host interfaces on ports

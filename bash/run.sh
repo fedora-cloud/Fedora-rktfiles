@@ -11,7 +11,11 @@ env
 echo
 echo "--- Root File System Contents ---"
 echo
-/usr/bin/ls -R /
+/usr/bin/find / -wholename /proc -prune -o -print
+echo
+echo "--- Proc File System Root ---"
+echo
+/usr/bin/ls /proc
 echo
 echo "--- Run complete ---"
 exit
