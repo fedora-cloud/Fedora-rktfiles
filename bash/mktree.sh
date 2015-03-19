@@ -4,7 +4,7 @@
 #
 SOURCE=""
 DEST=image/rootfs
-BINFILES="/usr/bin/bash /usr/bin/ls /usr/bin/env"
+BINFILES="/usr/bin/bash /usr/bin/ls /usr/bin/env /usr/bin/find"
 #CONFIGFILE=/etc/mongodb.conf
 
 mkdir -p ${DEST}

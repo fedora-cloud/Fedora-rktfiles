@@ -12,13 +12,12 @@ CONFIGFILE=/etc/mongodb.conf
 rm -rf ${DEST}
 
 mkdir -p ${ROOTFS}
+mkdir -p ${ROOTFS}/etc
 mkdir -p ${ROOTFS}/lib64
 mkdir -p ${ROOTFS}/usr/bin
-mkdir -p ${ROOTFS}/etc
 mkdir -p ${ROOTFS}/data/db
 mkdir -p ${ROOTFS}/dev
 touch ${ROOTFS}/dev/urandom
-mkdir -p ${ROOTFS}/proc
 
 for BINFILE in ${BINFILES}
 do
