@@ -21,19 +21,23 @@ touch ${ROOTFS}/dev/urandom
 
 for BINFILE in ${BINFILES}
 do
+                echo -n "${BINFILE} " && rpm -qf --qf "%{NAME}\n" ${BINFILE}
 		cp ${BINFILE} ${ROOTFS}${BINFILE}
 		SHAREDOBJS=$(ldd ${BINFILE} | awk '{print $1}' | grep -e ^/)
 		for SOFILE in ${SHAREDOBJS}
 		do
+                		echo -n "${SOFILE} " && rpm -qf --qf "%{NAME}\n" ${SOFILE}
 				cp ${SOFILE} ${ROOTFS}${SOFILE}
 		done
 		SHAREDOBJS=$(ldd ${BINFILE} | awk '{print $3}' | grep -e ^/lib)
 		for SOFILE in ${SHAREDOBJS}
 		do
+                		echo -n "${SOFILE} " && rpm -qf --qf "%{NAME}\n" ${SOFILE}
 				cp ${SOFILE} ${ROOTFS}${SOFILE}
 		done
 		
 done
+echo -n "${CONFIGFILE} " && rpm -qf --qf "%{NAME}\n" ${CONFIGFILE}
 cp ${CONFIGFILE} ${ROOTFS}${CONFIGFILE}
 
 cp manifest ${DEST}
