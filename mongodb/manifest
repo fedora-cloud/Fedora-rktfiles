@@ -1,6 +1,6 @@
 {
 		"acKind": "ImageManifest",
-		"acVersion": "0.5.1",
+		"acVersion": "0.5.2",
 		"name": "rocket-images.cloud.lab.eng.bos.redhat.com/mongodb",
 		"labels": [
 				{
