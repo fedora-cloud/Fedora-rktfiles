@@ -11,7 +11,7 @@ env
 echo
 echo "--- Root File System Contents ---"
 echo
-/usr/bin/find / -wholename /proc -prune -o -print
+/usr/bin/find / -wholename /proc -prune -o -wholename /sys -prune -o -print
 echo
 echo "--- Proc File System Root ---"
 echo

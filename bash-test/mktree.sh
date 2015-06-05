@@ -15,16 +15,19 @@ mkdir -p ${DEST}/usr/bin
 
 for BINFILE in ${BINFILES}
 do
+	        echo -n "${BINFILE} " && rpm -qf ${BINFILE}
 		cp ${BINFILE} ${DEST}${BINFILE}
 		chmod a+x ${DEST}${BINFILE}
 		SHAREDOBJS=$(ldd ${BINFILE} | awk '{print $1}' | grep -e ^/)
 		for SOFILE in ${SHAREDOBJS}
 		do
+	                        echo -n "${SOFILE} " && rpm -qf ${SOFILE}
 				cp ${SOFILE} ${DEST}${SOFILE}
 		done
 		SHAREDOBJS=$(ldd ${BINFILE} | awk '{print $3}' | grep -e ^/lib)
 		for SOFILE in ${SHAREDOBJS}
 		do
+	                        echo -n "${SOFILE} " && rpm -qf ${SOFILE}
 				cp ${SOFILE} ${DEST}${SOFILE}
 		done
 		

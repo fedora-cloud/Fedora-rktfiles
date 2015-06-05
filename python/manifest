@@ -1,0 +1,33 @@
+{
+		"acKind": "ImageManifest",
+		"acVersion": "0.5.1",
+		"name": "fedora-rocketfiles/python",
+		"labels": [
+				{
+						"name": "version",
+						"value": "0.1.1"
+				},
+				{
+						"name": "arch",
+						"value": "amd64"
+				},
+				{
+						"name": "os",
+						"value": "linux"
+				}
+		],
+		"app": {
+				"exec": [
+						"/usr/bin/python",
+						"/run.py"
+				],
+				"user": "0",
+				"group": "0"
+		},
+		"annotations": [
+			{
+				"name": "authors",
+				"value": "Mark Lamourine <markllama@gmail.com>"
+			}
+		]
+}
