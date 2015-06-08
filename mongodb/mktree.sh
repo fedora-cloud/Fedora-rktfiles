@@ -7,7 +7,7 @@ DEST=image
 ROOTFS=image/rootfs
 BINFILES="/usr/bin/mongod /usr/bin/mongos /usr/bin/bash /usr/bin/ls /usr/bin/find"
 #BINFILES="/usr/bin/mongod /usr/bin/mongos"
-CONFIGFILE=/etc/mongodb.conf
+CONFIGFILES="/etc/mongod.conf /etc/mongos.conf"
 
 rm -rf ${DEST}
 
@@ -37,8 +37,11 @@ do
 		done
 		
 done
-echo -n "${CONFIGFILE} " && rpm -qf --qf "%{NAME}\n" ${CONFIGFILE}
-cp ${CONFIGFILE} ${ROOTFS}${CONFIGFILE}
+for CONFIGFILE in ${CONFIGFILES}
+do
+  echo -n "${CONFIGFILE} " && rpm -qf --qf "%{NAME}\n" ${CONFIGFILE}
+  cp ${CONFIGFILE} ${ROOTFS}${CONFIGFILE}
+done
 
 cp manifest ${DEST}
 
